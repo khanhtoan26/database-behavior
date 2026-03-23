@@ -1,5 +1,7 @@
 # Index Selectivity Experiment (MySQL vs PostgreSQL)
 
+## Summary
+
 This experiment measures how an optimizer reacts when a predicate matches a large portion of the table (index selectivity around ~80%).
 
 Dataset:
@@ -15,4 +17,7 @@ Key results (from `EXPLAIN ANALYZE`):
 - **MySQL (InnoDB):** for the ~80% case, the optimizer chose an index lookup, but forcing a table scan was faster in this run.
 - **PostgreSQL:** the plan stayed index-assisted via `Bitmap Heap Scan` (with `Bitmap Index Scan`) even for the ~80% case.
 
-See the detailed comparison write-up: `docs/index-selectivity-optimizer-compare.md`.
+## Menu
+
+- `docs/index-selectivity-optimizer-compare.md`: side-by-side plan + timing summary from the exact `EXPLAIN ANALYZE` runs
+- `docs/index-selectivity-deep-dive.md`: full deep dive (why the crossover happens, how to read the plans, and practical guidance)
