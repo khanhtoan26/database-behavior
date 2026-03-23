@@ -398,37 +398,4 @@ LIMIT 1000 OFFSET 0;  -- Fetch in batches
 
 ### 10.2 Database Administration
 
-**Maintain Accurate Statistics:**
-```sql
--- Keep table statistics current (run monthly or after bulk changes)
-ANALYZE TABLE TestStatus;
-
--- Check current statistics
-SELECT STAT_NAME, STAT_VALUE FROM mysql.innodb_index_stats 
-WHERE TABLE_NAME='TestStatus' AND STAT_NAME='n_rows';
-```
-
-**Index Strategy:**
-```sql
--- Your current index is appropriate
-SHOW INDEX FROM TestStatus;
-
--- Consider if filtering on multiple columns
-ALTER TABLE TestStatus ADD INDEX idx_status_date (status, created_date);
-```
-
----
-
-## 11. Conclusion
-
-The paradox in our test reveals a fundamental principle of database performance:
-
-> **When the result set is large (>30-50%), sequential I/O outperforms random I/O despite index availability, because avoidance of expensive disk seeks becomes more valuable than index navigation overhead.**
-
-This is why:
-1. **InnoDB's optimizer switches strategies** based on estimated selectivity
-2. **Query estimation errors are critical** (our 38% underestimation changed the strategy)
-3. **Modern databases are I/O-bound**, not CPU-bound
-4. **Physical characteristics of storage** matter more than logical index structure in extreme cases
-
-For optimal performance, design queries and indexes considering the **likely selectivity** of your filters, not just "add an index and forget."
+...
